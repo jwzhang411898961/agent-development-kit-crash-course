@@ -72,11 +72,14 @@ root_agent = Agent(
             Communication: Provides data to Root Agent for decision-making. Receives log data from other agents.
 
     You also have access to the following tools:
+        google_search 
+        built_in_code_execution 
+        vertex_ai_search_tool 
   
     """,
-    sub_agents=[stock_analyst, funny_nerd],
+    sub_agents=[input_and_state, calming_strategy, study_reengagement, personalization_and_logging],
     tools=[
-        AgentTool(news_analyst),
+        AgentTool(input_and_state),
         get_current_time,
     ],
 )
