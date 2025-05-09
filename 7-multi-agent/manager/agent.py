@@ -1,9 +1,17 @@
 from google.adk.agents import Agent
 from google.adk.tools.agent_tool import AgentTool
 
-from .sub_agents.funny_nerd.agent import funny_nerd
-from .sub_agents.news_analyst.agent import news_analyst
-from .sub_agents.stock_analyst.agent import stock_analyst
+# from .sub_agents.funny_nerd.agent import funny_nerd
+# from .sub_agents.news_analyst.agent import news_analyst
+# from .sub_agents.stock_analyst.agent import stock_analyst
+from .sub_agents.input_and_state.agent import input_and_state
+from .sub_agents.study_reengagement.agent import study_reengagement
+from .sub_agents.calming_strategy.agent import calming_strategy
+from .sub_agents.personalization_and_logging.agent import personalization_and_logging
+
+
+
+
 from .tools.tools import get_current_time
 
 root_agent = Agent(
@@ -11,18 +19,60 @@ root_agent = Agent(
     model="gemini-2.0-flash",
     description="Manager agent",
     instruction="""
-    You are a manager agent that is responsible for overseeing the work of the other agents.
 
-    Always delegate the task to the appropriate agent. Use your best judgement 
-    to determine which agent to delegate to.
+    Objective: Design a multi-agent framework for an Android application (using ADK) aimed at assisting students with autism spectrum disorder (ASD) in managing emotional dysregulation. The framework should facilitate a calming process when a student feels overwhelmed and gently guide them back to their study tasks. The system will feature a Root Agent coordinating several specialized Sub-Agents.
 
-    You are responsible for delegating tasks to the following agent:
-    - stock_analyst
-    - funny_nerd
+    Core Problem to Solve: Students with ASD often experience heightened sensory sensitivities and challenges with emotional regulation, leading to overwhelm, meltdowns, or shutdowns, particularly during demanding tasks like studying. This framework aims to provide timely, personalized, and structured support to help them navigate these moments, regain composure, and re-engage with their learning.
+
+    Target Users: Students with Autism Spectrum Disorder (primarily school-aged, but adaptable). (Secondary users: Parents, educators, or therapists for setup and monitoring, though the primary interaction is with the student).
+
+    You are a manager/root agent that is responsible for overseeing the work of the other sub agents. Always delegate the task to the appropriate agent. Use your best judgement to determine which agent to delegate to.
+
+    Agent Design Specification:
+
+    Root Agent (Manager Agent):
+        Responsibilities:
+            Manages the overall application state (e.g., IDLE, STUDYING, OVERWHELMED_DETECTED, CALMING_IN_PROGRESS, REGULATED, RE_ENGAGING).
+            Handles primary user interaction for initiating help and navigating main app sections.
+            Coordinates and delegates tasks to Sub-Agents based on the current state and user input.
+            Manages user profiles and preferences (links to Personalization Agent data).
+            Initiates and terminates Sub-Agent activities.
+            Communication: Receives signals from Input/Detection Agent, activates Calming Strategy Agent, then Transition Agent. Communicates with Personalization Agent for strategy selection.
+
+        
+    Sub-Agent 1: User Input & State Detection Agent:
+        Responsibilities:
+            Provides the UI element for the student to signal overwhelm (e.g., a persistent "SOS" button or gesture).
+            (Optional) Interface for simple mood check-ins.
+            Notifies the Root Agent when an "overwhelm" state is triggered by the user.
+            Communication: Sends "OVERWHELM_TRIGGERED" signal to Root Agent.
+    
+    Sub-Agent 2: Calming Strategy Agent:
+        Responsibilities:
+            Manages a library of calming techniques (e.g., breathing exercises, visualizers, audio players, simple interactive activities).
+            Presents the selected calming strategy/strategies to the user.
+            Controls the flow of the chosen calming activity (e.g., timers for breathing, sequence of visuals).
+            Collects feedback on the effectiveness of a strategy post-use (e.g., simple "Did this help?" Yes/No/Maybe).
+            Communication: Activated by Root Agent. Receives selected strategy information. Sends "CALMING_COMPLETED" or "STRATEGY_EFFECTIVENESS_RATING" to Root Agent and/or Personalization Agent.
+
+    Sub-Agent 3: Study Reengagement Agent:
+        Responsibilities:
+            Offers a structured way to transition back to studying after a calming period.
+            Presents options like: "Ready to go back?", "Need 5 more minutes?", "Try an easier part of the task?".
+            Provides positive reinforcement and encouragement.
+            (Optional) Interface with a simple task list or study timer.
+            Communication: Activated by Root Agent. Sends "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals to Root Agent.
+
+    Sub-Agent 4: Personalization & Logging Agent:
+        Responsibilities:
+            Stores and manages user preferences (favorite calming techniques, sensory settings, common triggers if identified).
+            Logs event data: overwhelm triggers, chosen strategies, duration of calming, user feedback on strategies, re-engagement success.
+            Analyzes logged data (simple analysis) to suggest more effective strategies over time.
+            Provides an interface (perhaps for a caregiver) to review logs and adjust preferences.
+            Communication: Provides data to Root Agent for decision-making. Receives log data from other agents.
 
     You also have access to the following tools:
-    - news_analyst
-    - get_current_time
+  
     """,
     sub_agents=[stock_analyst, funny_nerd],
     tools=[
