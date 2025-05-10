@@ -77,4 +77,9 @@ input_and_state = Agent(
         This example aims to make the agent's role more tangible by describing its potential UI, user interaction, and how it communicates within an Android environment.
     """,
     # tools=[get_stock_price],
+    # Responsibilities:
+    # Provides the UI element for the student to signal overwhelm (e.g., a persistent "SOS" button or gesture).
+    # (Optional) Interface for simple mood check-ins.
+    # Notifies the Root Agent when an "overwhelm" state is triggered by the user.
+    # Communication: Sends "OVERWHELM_TRIGGERED" signal to Root Agent.
 )
