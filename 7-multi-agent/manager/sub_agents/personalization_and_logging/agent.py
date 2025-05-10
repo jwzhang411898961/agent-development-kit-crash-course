@@ -37,7 +37,7 @@ from google.adk.agents import Agent
 
 
 # Create the root agent
-stock_analyst = Agent(
+personalization_and_logging = Agent(
     name="personalization_and_logging",
     model="gemini-2.0-flash",
     description="This agent acts as the system's memory and learning component. It stores user preferences and logs key events (like overwhelm instances and strategy effectiveness) to personalize the experience over time, suggest more effective interventions, and provide insights to users or caregivers.",

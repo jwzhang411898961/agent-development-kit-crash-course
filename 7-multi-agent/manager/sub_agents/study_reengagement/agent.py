@@ -37,7 +37,7 @@ from google.adk.agents import Agent
 
 
 # Create the root agent
-stock_analyst = Agent(
+study_reengagement = Agent(
     name="study_reengagement",
     model="gemini-2.0-flash",
     description="This agent facilitates a smooth and encouraging transition back to study tasks after a student has completed a calming activity. It presents supportive options for re-engagement, offers positive reinforcement, and communicates the student's readiness (or need for more time) back to the Root Agent.",
