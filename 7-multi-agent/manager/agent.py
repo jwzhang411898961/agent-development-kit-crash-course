@@ -39,14 +39,12 @@ root_agent = Agent(
 
     You also have access to the following tools:
         google_search 
-        built_in_code_execution 
-        vertex_ai_search_tool 
   
     """,
     sub_agents=[input_and_state, calm_strategy, study_reengagement, personalization_and_logging],
     tools=[
-        AgentTool(input_and_state),
-        get_current_time,
+        # AgentTool(input_and_state),
+        # get_current_time,
         google_search
     ],
 )
