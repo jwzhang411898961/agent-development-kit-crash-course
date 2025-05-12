@@ -3,7 +3,7 @@ from google.adk.tools.tool_context import ToolContext
 
 def start_calming_activity(strategy_name: str, duration_seconds: int = 60) -> dict:
     """
-    Starts the selected calming activity as instructed by the Root Agent.
+    When the user taps the overwhelm button, and the root agent receives the "OVERWHELM_TRIGGERED" signal, it starts the selected calming activity.
 
     Parameters:
     - strategy_name (str): Type of calming activity ("breathing", "pictures", "music").
@@ -77,28 +77,13 @@ calm_strategy = Agent(
     model="gemini-2.0-flash",
     description="This agent is responsible for delivering personalized calming interventions. Upon activation by the Root Agent with a selected strategy (like guided breathing, visualizers, or soothing audio), it presents the activity to the user, manages its execution (e.g., timers, sequences), and subsequently collects simple feedback on its effectiveness. It then reports the completion status and user feedback back to the Root Agent and/or Personalization Agent.",
     instruction="""
-    Your Goal: Build the "Calming Helper" part of the app.
-
-    What it Does:
-        1. Gets Ready: Waits for the main app (Root Agent) to tell it which calming activity to start (e.g., "breathing exercise," "show calm pictures," "play soft music").
-        2. Shows the Activity: Displays the chosen calming activity to the student.
-            Breathing: Show simple inhale/exhale guides.
-            Pictures: Show a few calming images.
-            Music: Play a soothing sound.
-        3. Runs the Activity: Manages the timing or flow (e.g., how long to breathe, when to change pictures).
-        4. Asks "Did it Help?": After the activity, shows a very simple way for the student to say if it helped (e.g., Yes / A Little / No).
-        5. Tells the Main App:
-            *Lets the main app know when the calming activity is finished.
-            *Sends back the student's feedback (e.g., "Breathing exercise helped: Yes").
-
-    Key Things to Define:
-        * Inputs from Root Agent: What exact information does this agent need to start an activity (e.g., strategy_name, duration_if_any)?
-        * Outputs to Root Agent: What exact messages does it send back (e.g., CALMING_DONE, FEEDBACK_RESULT (strategy_name, rating))?
-        * How to present 2-3 simple calming activities (e.g., a basic breathing guide, a simple image viewer, a basic audio player).
-        * A very simple way to ask for feedback.
-
-    If the user asks about anything else, 
-    you should delegate the task to the manager agent.
+    Responsibilities:
+        Manages a library of calming techniques (e.g., breathing exercises, visualizers, audio players, simple interactive activities).
+        Presents the selected calming strategy/strategies to the user.
+        Controls the flow of the chosen calming activity (e.g., timers for breathing, sequence of visuals).
+        Collects feedback on the effectiveness of a strategy post-use (e.g., simple "Did this help?" Yes/No/Maybe).
+    Communication: 
+        Activated by Root Agent. Receives selected strategy information. Sends "CALMING_COMPLETED" or "STRATEGY_EFFECTIVENESS_RATING" to Root Agent and/or Personalization Agent.
     """,
     tools=[start_calming_activity, end_calming_activity, collect_user_feedback, show_feedback_prompt]
 )
@@ -109,3 +94,26 @@ calm_strategy = Agent(
 #     Controls the flow of the chosen calming activity (e.g., timers for breathing, sequence of visuals).
 #     Collects feedback on the effectiveness of a strategy post-use (e.g., simple "Did this help?" Yes/No/Maybe).
 #     Communication: Activated by Root Agent. Receives selected strategy information. Sends "CALMING_COMPLETED" or "STRATEGY_EFFECTIVENESS_RATING" to Root Agent and/or Personalization Agent.
+
+# Your Goal: Build the "Calming Helper" part of the app.
+
+#     What it Does:
+#         1. Gets Ready: Waits for the main app (Root Agent) to tell it which calming activity to start (e.g., "breathing exercise," "show calm pictures," "play soft music").
+#         2. Shows the Activity: Displays the chosen calming activity to the student.
+#             Breathing: Show simple inhale/exhale guides.
+#             Pictures: Show a few calming images.
+#             Music: Play a soothing sound.
+#         3. Runs the Activity: Manages the timing or flow (e.g., how long to breathe, when to change pictures).
+#         4. Asks "Did it Help?": After the activity, shows a very simple way for the student to say if it helped (e.g., Yes / A Little / No).
+#         5. Tells the Main App:
+#             *Lets the main app know when the calming activity is finished.
+#             *Sends back the student's feedback (e.g., "Breathing exercise helped: Yes").
+
+#     Key Things to Define:
+#         * Inputs from Root Agent: What exact information does this agent need to start an activity (e.g., strategy_name, duration_if_any)?
+#         * Outputs to Root Agent: What exact messages does it send back (e.g., CALMING_DONE, FEEDBACK_RESULT (strategy_name, rating))?
+#         * How to present 2-3 simple calming activities (e.g., a basic breathing guide, a simple image viewer, a basic audio player).
+#         * A very simple way to ask for feedback.
+
+#     If the user asks about anything else, 
+#     you should delegate the task to the manager agent.

@@ -6,7 +6,8 @@ from google.adk.agents import Agent
 
 def prompt_study_reengagement(current_task: str = "") -> dict:
     """
-    Prompts the student with reengagement options after a calming break.
+    When "CALMING_COMPLETED" or "STRATEGY_EFFECTIVENESS_RATING" was sent to Root Agent and/or Personalization Agent.
+    ,it prompts the student with reengagement options after a calming break.
 
     Parameters:
     - current_task (str): Optional description of the task the student was working on.
@@ -92,7 +93,8 @@ study_reengagement = Agent(
             Presents options like: "Ready to go back?", "Need 5 more minutes?", "Try an easier part of the task?".
             Provides positive reinforcement and encouragement.
             (Optional) Interface with a simple task list or study timer.
-            Communication: Activated by Root Agent. Sends "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals to Root Agent.
+        Communication: 
+            Activated by Root Agent. Sends "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals to Root Agent.
     """,
     tools=[prompt_study_reengagement, handle_reengagement_response, show_study_timer, show_task_list]
 )

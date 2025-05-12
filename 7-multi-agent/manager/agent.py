@@ -15,7 +15,7 @@ from .tools.tools import get_current_time
 root_agent = Agent(
     name="manager",
     model="gemini-2.0-flash",
-    description="The Root/Manager Agent is the central manager of the application, responsible for orchestrating the overall state and user flow—from detecting overwhelm, through calming interventions, to guiding study re-engagement. It handles primary user interactions (like initiating help), delegates specific tasks to the appropriate Sub-Agents, initiates and terminates their activities, and utilizes user profile data (via the Personalization Agent) to inform its decisions.",
+    description="The Root/Manager Agent is the central manager of the application, responsible for orchestrating the overall state and user flow—from detecting overwhelm, through calming interventions, to guiding study re-engagement, logging events. It handles primary user interactions (like initiating help), delegates specific tasks to the appropriate Sub-Agents, initiates and terminates their activities, and utilizes user profile data (via the Personalization Agent) to inform its decisions.",
     instruction="""
 
     Objective: Design a multi-agent framework for an Android application (using ADK) aimed at assisting students with autism spectrum disorder (ASD) in managing emotional dysregulation. The framework should facilitate a calming process when a student feels overwhelmed and gently guide them back to their study tasks. The system will feature a Root Agent coordinating several specialized Sub-Agents.
@@ -32,10 +32,11 @@ root_agent = Agent(
         Responsibilities:
             Manages the overall application state (e.g., IDLE, STUDYING, OVERWHELMED_DETECTED, CALMING_IN_PROGRESS, REGULATED, RE_ENGAGING).
             Handles primary user interaction for initiating help and navigating main app sections.
-            Coordinates and delegates tasks to Sub-Agents based on the current state and user input.
+            Coordinates and delegates tasks to Sub-Agents based on the received signal, current state and user input.
             Manages user profiles and preferences (links to Personalization Agent data).
             Initiates and terminates Sub-Agent activities.
-            Communication: Receives signals from Input/Detection Agent, activates Calming Strategy Agent, then Transition Agent. Communicates with Personalization Agent for strategy selection.
+        Communication: 
+            Receives signals from Input/Detection Agent, activates Calming Strategy Agent, then Study Reengagement Agent. Communicates with Personalization & Logging Agent for strategy selection.
 
     You also have access to the following tools:
         - get_current_time 

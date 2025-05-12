@@ -5,7 +5,7 @@ from google.adk.agents import Agent
 
 def store_user_preference(preference_type: str, value) -> dict:
     """
-    Stores or updates a user preference (e.g., favorite strategy, preferred visuals, sound settings).
+    When "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals are sent to Root Agent, it stores or updates a user preference (e.g., favorite strategy, preferred visuals, sound settings).
 
     Parameters:
     - preference_type (str): The type of preference (e.g., 'calming_strategy', 'visual_theme').
@@ -22,7 +22,7 @@ def store_user_preference(preference_type: str, value) -> dict:
 
 def log_event(event_type: str, metadata: dict) -> dict:
     """
-    Logs an event related to the user's experience (e.g., overwhelm trigger, strategy use, feedback).
+    When "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals are sent to Root Agent, it logs an event related to the user's experience (e.g., overwhelm trigger, strategy use, feedback).
 
     Parameters:
     - event_type (str): Type of event (e.g., 'OVERWHELM_TRIGGERED', 'STRATEGY_USED', 'FEEDBACK_RECEIVED').
@@ -39,7 +39,7 @@ def log_event(event_type: str, metadata: dict) -> dict:
 
 def get_user_profile_summary() -> dict:
     """
-    Returns a summary of user preferences and historical trends for caregiver or system use.
+    When "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals are sent to Root Agent, it returns a summary of user preferences and historical trends for caregiver or system use.
 
     Returns:
     - dict: Aggregated summary of preferences and outcomes.
@@ -58,7 +58,7 @@ def get_user_profile_summary() -> dict:
 
 def suggest_next_strategy(trigger_context: str) -> dict:
     """
-    Suggests a calming strategy based on logged context and outcomes.
+    When "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals are sent to Root Agent, it suggests a calming strategy based on logged context and outcomes.
 
     Parameters:
     - trigger_context (str): The recent trigger or user situation (e.g., 'after_quiz', 'loud_noise').
@@ -88,7 +88,8 @@ personalization_and_logging = Agent(
             Logs event data: overwhelm triggers, chosen strategies, duration of calming, user feedback on strategies, re-engagement success.
             Analyzes logged data (simple analysis) to suggest more effective strategies over time.
             Provides an interface (perhaps for a caregiver) to review logs and adjust preferences.
-            Communication: Provides data to Root Agent for decision-making. Receives log data from other agents.
+        Communication: 
+            Provides data to Root Agent for decision-making. Receives log data from other agents.
     """,
     tools=[store_user_preference, log_event, get_user_profile_summary, suggest_next_strategy]
 )

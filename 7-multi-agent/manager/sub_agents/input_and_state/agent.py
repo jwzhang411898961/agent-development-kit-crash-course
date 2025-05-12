@@ -168,7 +168,8 @@ input_and_state = Agent(
         Provides the UI element for the student to signal overwhelm (e.g., a persistent "SOS" button or gesture).
         (Optional) Interface for simple mood check-ins.
         Notifies the Root Agent when an "overwhelm" state is triggered by the user.
-        Communication: Sends "OVERWHELM_TRIGGERED" signal to Root Agent.
+    Communication: 
+        Sends "OVERWHELM_TRIGGERED" signal to Root Agent.
     """,
     # tools=[calm_beacon_tapped, on_overwhelm_gesture_detected, log_mood_checkin, acknowledge_feedback_ui]
     tools=[show_overwhelm_button, on_overwhelm_tapped, show_mood_checkin_prompt, handle_mood_selection]
