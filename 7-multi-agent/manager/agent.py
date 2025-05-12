@@ -38,7 +38,7 @@ root_agent = Agent(
             Communication: Receives signals from Input/Detection Agent, activates Calming Strategy Agent, then Transition Agent. Communicates with Personalization Agent for strategy selection.
 
     You also have access to the following tools:
-        google_search 
+        - google_search 
   
     """,
     sub_agents=[input_and_state, calm_strategy, study_reengagement, personalization_and_logging],
