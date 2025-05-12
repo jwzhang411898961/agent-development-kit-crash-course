@@ -1,34 +1,78 @@
 from google.adk.agents import Agent
 from google.adk.tools.tool_context import ToolContext
 
+def start_calming_activity(strategy_name: str, duration_seconds: int = 60) -> dict:
+    """
+    Starts the selected calming activity as instructed by the Root Agent.
 
-# def get_nerd_joke(topic: str, tool_context: ToolContext) -> dict:
-#     """Get a nerdy joke about a specific topic."""
-#     print(f"--- Tool: get_nerd_joke called for topic: {topic} ---")
+    Parameters:
+    - strategy_name (str): Type of calming activity ("breathing", "pictures", "music").
+    - duration_seconds (int): Optional duration of the activity in seconds (default: 60s).
 
-#     # Example jokes - in a real implementation, you might want to use an API
-#     jokes = {
-#         "python": "Why don't Python programmers like to use inheritance? Because they don't like to inherit anything!",
-#         "javascript": "Why did the JavaScript developer go broke? Because he used up all his cache!",
-#         "java": "Why do Java developers wear glasses? Because they can't C#!",
-#         "programming": "Why do programmers prefer dark mode? Because light attracts bugs!",
-#         "math": "Why was the equal sign so humble? Because he knew he wasn't less than or greater than anyone else!",
-#         "physics": "Why did the photon check a hotel? Because it was travelling light!",
-#         "chemistry": "Why did the acid go to the gym? To become a buffer solution!",
-#         "biology": "Why did the cell go to therapy? Because it had too many issues!",
-#         "default": "Why did the computer go to the doctor? Because it had a virus!",
-#     }
+    Returns:
+    - dict: Confirmation of activity start, strategy type, and duration.
+    """
+    return {
+        "event": "CALMING_STARTED",
+        "strategy": strategy_name,
+        "duration_seconds": duration_seconds,
+        "message": f"Started calming activity: {strategy_name} for {duration_seconds} seconds."
+    }
 
-#     joke = jokes.get(topic.lower(), jokes["default"])
+def end_calming_activity(strategy_name: str) -> dict:
+    """
+    Called when the calming activity finishes naturally or is stopped.
 
-#     # Update state with the last joke topic
-#     tool_context.state["last_joke_topic"] = topic
+    Parameters:
+    - strategy_name (str): The activity that just ended.
 
-#     return {"status": "success", "joke": joke, "topic": topic}
+    Returns:
+    - dict: Signal to Root Agent that activity is complete.
+    """
+    return {
+        "event": "CALMING_DONE",
+        "strategy": strategy_name,
+        "message": f"Completed calming activity: {strategy_name}."
+    }
+
+def collect_user_feedback(strategy_name: str, rating: str) -> dict:
+    """
+    Logs simple user feedback after calming activity.
+
+    Parameters:
+    - strategy_name (str): The activity the feedback is about.
+    - rating (str): One of "yes", "a_little", or "no".
+
+    Returns:
+    - dict: Feedback to Root Agent for adaptive learning or follow-up.
+    """
+    return {
+        "event": "FEEDBACK_RESULT",
+        "strategy": strategy_name,
+        "feedback": rating,
+        "message": f"User reported '{rating}' after '{strategy_name}' activity."
+    }
+
+def show_feedback_prompt(strategy_name: str) -> dict:
+    """
+    Shows a simple Yes / A Little / No prompt after the activity ends.
+
+    Parameters:
+    - strategy_name (str): Used to label the feedback.
+
+    Returns:
+    - dict: Instruction to present feedback UI.
+    """
+    return {
+        "action": "SHOW_FEEDBACK_UI",
+        "strategy": strategy_name,
+        "options": ["yes", "a_little", "no"],
+        "message": f"Asking user if '{strategy_name}' helped."
+    }
 
 
 # Create the funny nerd agent
-funny_nerd = Agent(
+calm_strategy = Agent(
     name="calm_strategy",
     model="gemini-2.0-flash",
     description="This agent is responsible for delivering personalized calming interventions. Upon activation by the Root Agent with a selected strategy (like guided breathing, visualizers, or soothing audio), it presents the activity to the user, manages its execution (e.g., timers, sequences), and subsequently collects simple feedback on its effectiveness. It then reports the completion status and user feedback back to the Root Agent and/or Personalization Agent.",
@@ -56,11 +100,12 @@ funny_nerd = Agent(
     If the user asks about anything else, 
     you should delegate the task to the manager agent.
     """,
-    # tools=[get_nerd_joke],
-    # Responsibilities:
-    #     Manages a library of calming techniques (e.g., breathing exercises, visualizers, audio players, simple interactive activities).
-    #     Presents the selected calming strategy/strategies to the user.
-    #     Controls the flow of the chosen calming activity (e.g., timers for breathing, sequence of visuals).
-    #     Collects feedback on the effectiveness of a strategy post-use (e.g., simple "Did this help?" Yes/No/Maybe).
-    #     Communication: Activated by Root Agent. Receives selected strategy information. Sends "CALMING_COMPLETED" or "STRATEGY_EFFECTIVENESS_RATING" to Root Agent and/or Personalization Agent.
+    tools=[start_calming_activity, end_calming_activity, collect_user_feedback, show_feedback_prompt]
 )
+
+# Responsibilities:
+#     Manages a library of calming techniques (e.g., breathing exercises, visualizers, audio players, simple interactive activities).
+#     Presents the selected calming strategy/strategies to the user.
+#     Controls the flow of the chosen calming activity (e.g., timers for breathing, sequence of visuals).
+#     Collects feedback on the effectiveness of a strategy post-use (e.g., simple "Did this help?" Yes/No/Maybe).
+#     Communication: Activated by Root Agent. Receives selected strategy information. Sends "CALMING_COMPLETED" or "STRATEGY_EFFECTIVENESS_RATING" to Root Agent and/or Personalization Agent.
