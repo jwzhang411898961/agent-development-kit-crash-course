@@ -21,7 +21,7 @@ def start_calming_activity(strategy_name: str, duration_seconds: int = 60) -> di
 
 def end_calming_activity(strategy_name: str) -> dict:
     """
-    Called when the calming activity finishes naturally or is stopped.
+    Called when the calming activity finishes naturally or is stopped. Sent the "CALMING_DONE" signal to root agent.
 
     Parameters:
     - strategy_name (str): The activity that just ended.
@@ -83,7 +83,7 @@ calm_strategy = Agent(
         Controls the flow of the chosen calming activity (e.g., timers for breathing, sequence of visuals).
         Collects feedback on the effectiveness of a strategy post-use (e.g., simple "Did this help?" Yes/No/Maybe).
     Communication: 
-        Activated by Root Agent. Receives selected strategy information. Sends "CALMING_COMPLETED" or "STRATEGY_EFFECTIVENESS_RATING" to Root Agent and/or Personalization Agent.
+        Activated by Root Agent. Receives selected strategy information. Sends "CALMING_COMPLETED" or "STRATEGY_EFFECTIVENESS_RATING" to Root Agent.
     """,
     tools=[start_calming_activity, end_calming_activity, collect_user_feedback, show_feedback_prompt]
 )

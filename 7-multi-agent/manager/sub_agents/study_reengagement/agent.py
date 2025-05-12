@@ -26,27 +26,27 @@ def prompt_study_reengagement(current_task: str = "") -> dict:
         ]
     }
 
-def handle_reengagement_response(response: str) -> dict:
-    """
-    Handles the student's selection from the reengagement prompt.
+# def handle_reengagement_response(response: str) -> dict:
+#     """
+#     Handles the student's selection from the reengagement prompt.
 
-    Parameters:
-    - response (str): One of 'ready_to_return', 'need_more_time', 'try_easier_part'
+#     Parameters:
+#     - response (str): One of 'ready_to_return', 'need_more_time', 'try_easier_part'
 
-    Returns:
-    - dict: Signal to send back to the Root Agent.
-    """
-    if response == "ready_to_return":
-        return {
-            "event": "STUDY_RE_ENGAGED",
-            "message": "Student is ready to return to study."
-        }
-    else:
-        return {
-            "event": "NEEDS_FURTHER_BREAK",
-            "reason": response,
-            "message": f"Student chose: {response.replace('_', ' ')}."
-        }
+#     Returns:
+#     - dict: Signal to send back to the Root Agent.
+#     """
+#     if response == "ready_to_return":
+#         return {
+#             "event": "STUDY_RE_ENGAGED",
+#             "message": "Student is ready to return to study."
+#         }
+#     else:
+#         return {
+#             "event": "NEEDS_FURTHER_BREAK",
+#             "reason": response,
+#             "message": f"Student chose: {response.replace('_', ' ')}."
+#         }
 
 def show_study_timer(duration_minutes: int = 25) -> dict:
     """
@@ -96,5 +96,6 @@ study_reengagement = Agent(
         Communication: 
             Activated by Root Agent. Sends "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals to Root Agent.
     """,
-    tools=[prompt_study_reengagement, handle_reengagement_response, show_study_timer, show_task_list]
+    # tools=[prompt_study_reengagement, handle_reengagement_response, show_study_timer, show_task_list]
+    tools=[prompt_study_reengagement, show_study_timer, show_task_list]
 )

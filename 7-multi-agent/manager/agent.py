@@ -24,9 +24,7 @@ root_agent = Agent(
 
     Target Users: Students with Autism Spectrum Disorder (primarily school-aged, but adaptable). (Secondary users: Parents, educators, or therapists for setup and monitoring, though the primary interaction is with the student).
 
-    You are a manager/root agent that is responsible for overseeing the work of the other sub agents. Always delegate the task to the appropriate agent. Use your best judgement to determine which agent to delegate to.
-
-    Agent Design Specification:
+    You are a manager/root agent that is responsible for overseeing the work of the other sub agents. Always delegate the task to the appropriate agent. Use your best judgement to determine which agent to delegate to. Whenever receiving the signal from one sub-agent, immediatelt activate the coresponding next sub-agent.
 
     Root Agent (Manager Agent):
         Responsibilities:
