@@ -44,9 +44,9 @@ root_agent = Agent(
     sub_agents=[input_and_state, calm_strategy, study_reengagement, personalization_and_logging],
     tools=[
         # AgentTool(input_and_state),
-        # get_current_time,
-        google_search
-    ],
+        get_current_time,
+        # google_search
+    ]
 )
 
     # Sub-Agent 1: User Input & State Detection Agent:
