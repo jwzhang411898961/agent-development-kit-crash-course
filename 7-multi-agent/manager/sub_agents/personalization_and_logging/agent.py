@@ -1,79 +1,46 @@
 from datetime import datetime
 
-import yfinance as yf
 from google.adk.agents import Agent
 
-def store_user_preference(preference_type: str, value) -> dict:
+def log_event(event_type: str, metadata: dict) -> str:
     """
-    When "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals are sent to Root Agent, it stores or updates a user preference (e.g., favorite strategy, preferred visuals, sound settings).
+    Logs an event such as overwhelm trigger, strategy used, or feedback.
 
     Parameters:
-    - preference_type (str): The type of preference (e.g., 'calming_strategy', 'visual_theme').
-    - value (Any): The value to be stored (e.g., 'breathing', 'dark mode').
+        event_type (str): Type of event (e.g., "OVERWHELM_TRIGGERED", "CALMING_DONE", "FEEDBACK_RECEIVED").
+        metadata (dict): Additional details about the event (e.g., timestamp, strategy_name, success_rating).
 
     Returns:
-    - dict: Confirmation of stored preference.
+        str: Confirmation message.
     """
-    return {
-        "event": "USER_PREFERENCE_UPDATED",
-        "preference_type": preference_type,
-        "value": value
-    }
+    return f"Event '{event_type}' logged successfully with metadata: {metadata}"
 
-def log_event(event_type: str, metadata: dict) -> dict:
+def update_user_preferences(preference_type: str, value: str) -> str:
     """
-    When "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals are sent to Root Agent, it logs an event related to the user's experience (e.g., overwhelm trigger, strategy use, feedback).
+    Updates a user preference such as favorite strategy or sensory setting.
 
     Parameters:
-    - event_type (str): Type of event (e.g., 'OVERWHELM_TRIGGERED', 'STRATEGY_USED', 'FEEDBACK_RECEIVED').
-    - metadata (dict): Additional information about the event (e.g., timestamp, strategy_name, rating).
+        preference_type (str): Preference key (e.g., "favorite_strategy", "color_theme").
+        value (str): New preference value.
 
     Returns:
-    - dict: Acknowledgment that the log entry was accepted.
+        str: Confirmation of update.
     """
-    return {
-        "event": "EVENT_LOGGED",
-        "event_type": event_type,
-        "data": metadata
-    }
+    return f"Preference '{preference_type}' updated to '{value}'."
 
-def get_user_profile_summary() -> dict:
+def get_personalized_suggestion() -> dict:
     """
-    When "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals are sent to Root Agent, it returns a summary of user preferences and historical trends for caregiver or system use.
+    Analyzes log data to suggest the most effective calming strategy.
 
     Returns:
-    - dict: Aggregated summary of preferences and outcomes.
+        dict: A suggested strategy with reasoning (if available).
     """
-    # Placeholder: in real use, would pull from a datastore or cache.
+    # This is a placeholder; real logic would analyze stored logs
     return {
-        "event": "USER_PROFILE_SUMMARY",
-        "favorite_strategies": ["breathing", "music"],
-        "common_triggers": ["math tasks", "long reading sessions"],
-        "effective_strategies_by_trigger": {
-            "math tasks": "breathing",
-            "long reading sessions": "picture view"
-        },
-        "reengagement_success_rate": 0.83
+        "suggested_strategy": "breathing_exercise",
+        "confidence": "high",
+        "reason": "This strategy has the highest success feedback in recent sessions."
     }
-
-def suggest_next_strategy(trigger_context: str) -> dict:
-    """
-    When "STUDY_RE_ENGAGED" or "NEEDS_FURTHER_BREAK" signals are sent to Root Agent, it suggests a calming strategy based on logged context and outcomes.
-
-    Parameters:
-    - trigger_context (str): The recent trigger or user situation (e.g., 'after_quiz', 'loud_noise').
-
-    Returns:
-    - dict: Recommended strategy.
-    """
-    # This is where simple logic/ML could be applied in a real implementation
-    suggested = "breathing" if "quiz" in trigger_context else "music"
-    return {
-        "event": "STRATEGY_SUGGESTION",
-        "trigger": trigger_context,
-        "suggested_strategy": suggested
-    }
-
 
 
 # Create the sub agent
@@ -91,5 +58,5 @@ personalization_and_logging = Agent(
         Communication: 
             Provides data to Root Agent for decision-making. Receives log data from other agents.
     """,
-    tools=[store_user_preference, log_event, get_user_profile_summary, suggest_next_strategy]
+    tools=[log_event, update_user_preferences, get_personalized_suggestion]
 )

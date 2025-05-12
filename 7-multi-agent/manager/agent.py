@@ -1,5 +1,6 @@
 from google.adk.agents import Agent
 from google.adk.tools.agent_tool import AgentTool
+from google.adk.agents import SequentialAgent
 from google.adk.tools import google_search
 
 # from .sub_agents.funny_nerd.agent import funny_nerd
@@ -47,6 +48,14 @@ root_agent = Agent(
         # google_search
     ]
 )
+
+# # Create the sequential agent with minimal callback
+# root_agent = SequentialAgent(
+#     name="manager",
+#     sub_agents=[input_and_state, calm_strategy, study_reengagement, personalization_and_logging],
+#     description="The Root/Manager Agent is the central manager of the application, responsible for orchestrating the overall state and user flow—from detecting overwhelm, through calming interventions, to guiding study re-engagement, logging events. It handles primary user interactions (like initiating help), delegates specific tasks to the appropriate Sub-Agents, initiates and terminates their activities, and utilizes user profile data (via the Personalization Agent) to inform its decisions."
+# )
+
 
     # Sub-Agent 1: User Input & State Detection Agent:
     #     Responsibilities:
