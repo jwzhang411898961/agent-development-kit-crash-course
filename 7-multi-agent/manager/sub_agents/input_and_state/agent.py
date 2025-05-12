@@ -3,6 +3,7 @@ from datetime import datetime
 # import yfinance as yf
 from google.adk.agents import Agent
 from google.adk.tools.tool_context import ToolContext
+from input_and_state_callback import InputAndStateCallback
 
 def show_overwhelm_button() -> dict:
     """
@@ -172,7 +173,8 @@ input_and_state = Agent(
         Sends "OVERWHELM_TRIGGERED" signal to Root Agent.
     """,
     # tools=[calm_beacon_tapped, on_overwhelm_gesture_detected, log_mood_checkin, acknowledge_feedback_ui]
-    tools=[show_overwhelm_button, on_overwhelm_tapped, show_mood_checkin_prompt, handle_mood_selection]
+    tools=[show_overwhelm_button, on_overwhelm_tapped, show_mood_checkin_prompt, handle_mood_selection], 
+    callback=InputAndStateCallback(),  # <- This connects the behavior
 )
 
 
