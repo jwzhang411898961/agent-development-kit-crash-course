@@ -13,6 +13,25 @@ from .sub_agents.personalization_and_logging.agent import personalization_and_lo
 
 from .tools.tools import get_current_time
 
+# from google.adk.agents.callback_context import CallbackContext
+
+
+# def after_root_agent(ctx: CallbackContext):
+#     last_agent = ctx.session.step_history[-1].agent_name
+
+#     if last_agent == "input_and_state":
+#         return ctx.transfer("calm_strategy", reason="Begin calming")
+#     elif last_agent == "calm_strategy":
+#         if ctx.session.memory.get("user_is_calm"):
+#             return ctx.transfer("study_reengagement", reason="User calmed down")
+#         else:
+#             return ctx.transfer("calm_strategy", reason="Continue calming")
+#     elif last_agent == "study_reengagement":
+#         return ctx.transfer("personalization_and_logging", reason="Log session")
+#     elif last_agent == "personalization_and_logging":
+#         ctx.logger.info("Session complete.")
+#         return None
+
 root_agent = Agent(
     name="manager",
     model="gemini-2.0-flash",
@@ -46,7 +65,8 @@ root_agent = Agent(
         # AgentTool(input_and_state),
         get_current_time,
         # google_search
-    ]
+    ], 
+    # after_agent_callback=after_root_agent
 )
 
 # # Create the sequential agent with minimal callback

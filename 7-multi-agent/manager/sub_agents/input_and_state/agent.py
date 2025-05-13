@@ -1,9 +1,9 @@
 from datetime import datetime
 
 # import yfinance as yf
-from google.adk.agents import Agent
+from google.adk.agents import Agent, LlmAgent
 from google.adk.tools.tool_context import ToolContext
-from input_and_state_callback import InputAndStateCallback
+# from manager.sub_agents.input_and_state import input_and_state_callback
 
 def show_overwhelm_button() -> dict:
     """
@@ -174,8 +174,10 @@ input_and_state = Agent(
     """,
     # tools=[calm_beacon_tapped, on_overwhelm_gesture_detected, log_mood_checkin, acknowledge_feedback_ui]
     tools=[show_overwhelm_button, on_overwhelm_tapped, show_mood_checkin_prompt, handle_mood_selection], 
-    callback=InputAndStateCallback(),  # <- This connects the behavior
+    # after_agent_callback=input_and_state_callback.after_input_agent  # <- This connects the behavior
 )
+
+
 
 
 # Your responsibilities are as follows:
